@@ -1,0 +1,19 @@
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY;
+const BASE_URL = "https://api.themoviedb.org/3";
+
+// Popular Movies
+export const POPULAR_MOVIES_URL = `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
+
+// Top Rated Movies
+export const TOP_RATED_MOVIES_URL = `${BASE_URL}/movie/top_rated?api_key=${API_KEY}&language=en-US&page=1`;
+
+// Upcoming Movies
+export const UPCOMING_MOVIES_URL = `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`;
+
+// Discover Movies (by popularity, genre, etc.)
+export const DISCOVER_MOVIES_URL = `${BASE_URL}/discover/movie?api_key=${API_KEY}&include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc`;
+export const MOVIE_VIDEOS_URL = (movieId) =>
+  `${BASE_URL}/movie/${movieId}/videos?api_key=${API_KEY}&language=en-US`
+// Images
+export const IMAGE_URL = "https://image.tmdb.org/t/p/w500"; // poster
+export const BACKDROP_URL = "https://image.tmdb.org/t/p/original"; // backdrop

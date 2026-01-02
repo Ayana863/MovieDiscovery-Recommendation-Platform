@@ -1,0 +1,113 @@
+import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
+import { IMAGE_URL, POPULAR_MOVIES_URL } from "../API/TmdbData";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { CiHeart } from "react-icons/ci";
+
+function PopularMovies({ setMovieCard }) {
+  const [popular, setPopular] = useState([])
+  // useRef = control horizontal scrolling using icon buttons
+  const scrollRef = useRef(null)
+
+
+  useEffect(() => {
+    const fetchPopularMovies = async () => {
+      try {
+        const response = await axios.get(POPULAR_MOVIES_URL)
+        setPopular(response.data.results)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    fetchPopularMovies()
+  }, [])
+
+  const scrollLeft = () => {
+    scrollRef.current.scrollBy({ left: -400, behavior: "smooth" });
+  }
+
+  const scrollRight = () => {
+    scrollRef.current.scrollBy({ left: 400, behavior: "smooth" });
+  }
+
+  return (
+    <div className='relative py-6'>
+      {/* Header */}
+      <div className='flex items-center justify-between px-6 mb-4'>
+        <h2 className='text-white text-xl font-bold'>Popular Movies</h2>
+
+        <div className='flex gap-2'>
+          <button
+            onClick={scrollLeft}
+            className='bg-black hover:bg-black text-white p-2 rounded-full shadow-lg'
+          >
+            <FaChevronLeft />
+          </button>
+
+          <button
+            onClick={scrollRight}
+            className='bg-black hover:bg-black text-white p-2 rounded-full shadow-lg'
+          >
+            <FaChevronRight />
+          </button>
+        </div>
+      </div>
+
+      {/* Movie Row */}
+      <div
+        ref={scrollRef}
+        className='flex gap-x-6 px-6 overflow-hidden select-none'
+      >
+        {popular.map((movie) => (
+          <div
+            key={movie.id}
+            className='min-w-[180px] bg-black rounded-xl shadow-xl
+                       hover:scale-105 transition-transform duration-300
+                       flex-shrink-0 relative'
+          >
+            {/* Favorite */}
+            <button
+              className='absolute top-2 right-2 text-white bg-black
+                         hover:text-red-500 p-1 rounded-full transition'
+            >
+              <CiHeart className='text-3xl' title="Add to Favorite"/>
+            </button>
+
+
+            <img
+              src={`${IMAGE_URL}${movie.poster_path}`}
+              alt={movie.title}
+              className='w-full h-72 object-cover rounded-t-xl'
+            />
+
+
+            <div className='p-3'>
+              <h3 className='text-white text-sm font-semibold truncate'>
+                {movie.title}
+              </h3>
+
+              <div className='flex items-center justify-between mt-2 text-xs'>
+                <span className='text-yellow-400'>
+                  ⭐ {movie.vote_average}
+                </span>
+              </div>
+
+              <div className='mt-3'>
+                <button
+                  onClick={() => setMovieCard(movie)}
+                  className='w-full px-3 py-1 text-sm bg-amber-500
+                             text-black rounded-md hover:bg-amber-600 transition'
+                >
+                  Read More
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+export default PopularMovies
