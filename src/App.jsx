@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Navbar from './COMPONENTS/Navbar'
 import Home from './PAGES/Home'
@@ -15,6 +15,8 @@ import Trending from './PAGES/Trending'
 import Crime from './GENRE/Crime'
 import Horror from './GENRE/Horror'
 import Thriller from './GENRE/Thriller'
+import TopRatedMovie from './COMPONENTS/TopRatedMovie'
+
 
 
 
@@ -22,16 +24,19 @@ import Thriller from './GENRE/Thriller'
 function App() {
   const location = useLocation()
   const isLandingPage = location.pathname === '/'
+  const [searchTerm, setSearchTerm] = useState("")
   return (
 
     <>
-      {!isLandingPage &&
-        <Navbar />
-      }
+
+      <Navbar isLandingPage={isLandingPage} setSearchTerm={setSearchTerm} />
+
 
       <Routes>
 
+
         <Route path='/' element={<LandingPage />} />
+
         <Route path='/home' element={<Home />} />
 
         <Route path='/genre' element={<Genre />}>
@@ -52,6 +57,7 @@ function App() {
         <Route path='/favorites' element={<Favorites />} />
         <Route path='/history' element={<WatchHistory />} />
         <Route path='/trending' element={<Trending />} />
+        <Route path='/toprated' element={<TopRatedMovie />} />
         <Route path='/profile' element={<Profile />} />
 
       </Routes>

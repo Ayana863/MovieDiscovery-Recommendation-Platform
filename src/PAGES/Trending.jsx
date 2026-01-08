@@ -1,29 +1,38 @@
 import React, { useState } from 'react'
-import UpcomingMovies from '../COMPONENTS/UpcomingMovie'
 import PopularMovies from '../COMPONENTS/PopularMovies'
+import TrendingMovies from '../COMPONENTS/TrendingMovies'
 import TopRatedMovie from '../COMPONENTS/TopRatedMovie'
 import MovieModal from '../COMPONENTS/MovieModal'
-
-
+import SearchResult from '../COMPONENTS/SearchResult'
+import { useSelector } from 'react-redux'
 
 function Trending() {
   const [movieCard, setMovieCard] = useState(null)
+  const searchValue = useSelector(state => state.search.value)
+
+  const isSearching = searchValue.trim().length > 0
+
   return (
     <>
+      <div className="min-h-screen bg-black">
 
-      <div className='min-h-screen bg-black'>
+        {isSearching ? (
+          <SearchResult setMovieCard={setMovieCard} />
+        ) : (
+          <>
+            <div className="pt-40">
+              <PopularMovies setMovieCard={setMovieCard} />
+            </div>
 
-        <div className='pt-40 px-6'>
-          <UpcomingMovies />
-        </div>
+            <div className="pt-20">
+              <TrendingMovies setMovieCard={setMovieCard} />
+            </div>
 
-        <div className='pt-40'>
-          <PopularMovies setMovieCard={setMovieCard} />
-        </div>
-
-        <div className='pt-20'>
-          <TopRatedMovie setMovieCard={setMovieCard} />
-        </div>
+            <div className="pt-20">
+              <TopRatedMovie setMovieCard={setMovieCard} />
+            </div>
+          </>
+        )}
 
       </div>
 

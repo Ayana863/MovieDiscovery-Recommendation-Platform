@@ -3,11 +3,18 @@ import React, { useEffect, useRef, useState } from "react";
 import { IMAGE_URL, POPULAR_MOVIES_URL } from "../API/TmdbData";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { CiHeart } from "react-icons/ci";
+import { AddToFav } from "../Slice/Favorites";
+import { useDispatch, useSelector } from "react-redux";
+
 
 function PopularMovies({ setMovieCard }) {
   const [popular, setPopular] = useState([])
   // useRef = control horizontal scrolling using icon buttons
   const scrollRef = useRef(null)
+
+
+  const FavoritesItems = useSelector(state => state.favorites.value)
+  const dispatch = useDispatch()
 
 
   useEffect(() => {
@@ -31,11 +38,30 @@ function PopularMovies({ setMovieCard }) {
     scrollRef.current.scrollBy({ left: 400, behavior: "smooth" });
   }
 
+
+
+  // function for favorites
+  const toggleFavorite = (movie) => {
+    const exists = FavoritesItems.find(item => item.id === movie.id)
+
+    if (exists) {
+      dispatch(RemoveFromFavorites(movie.id))
+    } else {
+      dispatch(AddToFav({
+        id: movie.id,
+        title: movie.title,
+        poster: movie.poster_path,
+        rating: movie.vote_average
+      }))
+    }
+  }
+
+
   return (
     <div className='relative py-6'>
       {/* Header */}
       <div className='flex items-center justify-between px-6 mb-4'>
-        <h2 className='text-white text-xl font-bold'>Popular Movies</h2>
+        <h2 className='text-white text-2xl font-bold'>Popular Movies</h2>
 
         <div className='flex gap-2'>
           <button
@@ -68,12 +94,16 @@ function PopularMovies({ setMovieCard }) {
           >
             {/* Favorite */}
             <button
+              onClick={() => toggleFavorite(movie)}
               className='absolute top-2 right-2 text-white bg-black
-                         hover:text-red-500 p-1 rounded-full transition'
+                                      hover:text-red-500 p-1 rounded-full transition'
+              title='Add to Favorites'
             >
-              <CiHeart className='text-3xl' title="Add to Favorite"/>
+              <CiHeart className={`text-3xl ${FavoritesItems.find(item => item.id === movie.id)
+                ? 'text-red-500'
+                : 'text-white'
+                }`} />
             </button>
-
 
             <img
               src={`${IMAGE_URL}${movie.poster_path}`}

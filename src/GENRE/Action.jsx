@@ -2,34 +2,56 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { DISCOVER_MOVIES_URL, IMAGE_URL } from '../API/TmdbData'
 import { CiHeart } from 'react-icons/ci'
-import { useOutletContext } from 'react-router-dom';
-
-
-
+import { useOutletContext } from 'react-router-dom'
+import { AddToFav, RemoveFromFavorites } from '../Slice/Favorites'
+import { useDispatch, useSelector } from 'react-redux'
 
 function Action() {
-  // Access parent data/function from Outlet
+  // Access setMovieCard from Outlet
   const { setMovieCard } = useOutletContext()
+
   const [action, setAction] = useState([])
-  // console.log(action);
 
+  // Redux states
+  const searchValue = useSelector(state => state.search.value)
+  const FavoritesItems = useSelector(state => state.favorites.value)
+  const dispatch = useDispatch()
 
-  const ActionMovies = async () => {
-    try {
-      const response = await axios.get(`${DISCOVER_MOVIES_URL}&with_genres=28`)
-      // console.log(response);
-      setAction(response.data.results)
-
-    } catch (err) {
-      console.log(err);
-
-    }
-  }
   useEffect(() => {
+
+    // Fetch movies
+    const ActionMovies = async () => {
+      try {
+        const response = await axios.get(`${DISCOVER_MOVIES_URL}&with_genres=28`)
+        setAction(response.data.results)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+
     ActionMovies()
   }, [])
 
+  // Search filtering 
+  const filteredActionMovies = action.filter(movie =>
+    (movie.title || '').toLowerCase().includes(searchValue.toLowerCase())
+  )
 
+  // Favorites toggle
+  const toggleFavorite = (movie) => {
+    const exists = FavoritesItems.find(item => item.id === movie.id)
+
+    if (exists) {
+      dispatch(RemoveFromFavorites(movie.id))
+    } else {
+      dispatch(AddToFav({
+        id: movie.id,
+        title: movie.title,
+        poster: movie.poster_path,
+        rating: movie.vote_average
+      }))
+    }
+  }
 
   return (
     <>
@@ -37,30 +59,38 @@ function Action() {
         Action
       </h2>
 
+
+      {filteredActionMovies.length === 0 && searchValue && (
+        <p className='text-center text-gray-400 mt-20'>
+          No movies found
+        </p>
+      )}
+
       <div className='grid grid-cols-2 md:grid-cols-3 gap-6 mt-7 p-10'>
-        {action.map((movie) => (
+        {filteredActionMovies.map(movie => (
           <div
             key={movie.id}
             className='bg-gray-900 rounded-xl p-3 shadow-lg'
           >
-
             <div className='relative'>
               <img
-                src={
-                  `${IMAGE_URL}${movie.poster_path}`
-
-                }
+                src={`${IMAGE_URL}${movie.poster_path}`}
                 alt={movie.title}
                 className='rounded-lg w-full h-80 object-cover'
               />
 
               {/* Favorite Icon */}
               <button
-                className='absolute top-2 right-2 text-white bg-black
-                           hover:text-red-500 p-1 rounded-full transition'
+                onClick={() => toggleFavorite(movie)}
+                className='absolute top-2 right-2 bg-black p-1 rounded-full transition'
                 title='Add to Favorites'
               >
-                <CiHeart className='text-3xl' />
+                <CiHeart
+                  className={`text-3xl ${FavoritesItems.find(item => item.id === movie.id)
+                    ? 'text-red-500'
+                    : 'text-white'
+                    }`}
+                />
               </button>
             </div>
 
@@ -79,14 +109,16 @@ function Action() {
             </div>
 
             <div className='mt-3'>
-              <button onClick={() => { setMovieCard(movie) }} className='w-full px-3 py-1 text-md bg-amber-500 text-black rounded-md hover:bg-amber-600 transition'>
+              <button
+                onClick={() => setMovieCard(movie)}
+                className='w-full px-3 py-1 text-md bg-amber-500 text-black rounded-md hover:bg-amber-600 transition'
+              >
                 Read More
               </button>
             </div>
           </div>
         ))}
       </div>
-
     </>
   )
 }

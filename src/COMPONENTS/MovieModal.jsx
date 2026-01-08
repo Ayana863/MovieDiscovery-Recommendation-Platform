@@ -3,10 +3,13 @@ import { IMAGE_URL, MOVIE_VIDEOS_URL } from '../API/TmdbData';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { FaTimes } from 'react-icons/fa';
+import { AddToHistory } from '../Slice/Historyslice';
+import { useDispatch } from 'react-redux';
 
 
 function MovieModal({ movie, onClose }) {
     const [videos, setVideos] = useState(null)
+    const dispatch = useDispatch()
 
     if (!movie) {
         //  nothing renders
@@ -21,6 +24,14 @@ function MovieModal({ movie, onClose }) {
             if (videoResult) {
                 // key = the YouTube video id
                 setVideos(videoResult.key)
+                dispatch(AddToHistory({
+                    id: movie.id,
+                    title: movie.title,
+                    poster: movie.poster_path,
+                    rating: movie.vote_average,
+                    releaseDate: movie.release_date,
+                    watchedAt: new Date().toLocaleString()
+                }))
             } else {
                 toast.error("Sorry! No video available on YouTube")
             }
