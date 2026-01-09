@@ -38,7 +38,7 @@ function LandingPage() {
               curated just for you.
             </p>
 
-            <button onClick={() => navigate('/home')}
+            <button onClick={() => navigate('/register')}
               className='mt-10 px-12 py-4 bg-amber-500 text-black text-lg font-bold
                  rounded-full shadow-[0_0_30px_rgba(245,158,11,0.6)]
                  hover:scale-105 transition'

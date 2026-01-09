@@ -23,21 +23,21 @@ function Home() {
           <UpcomingMovies />
         </div>
       </div>
-      <div className="px-6 py-20 flex justify-center  bg-gradient-to-b from-black via-gray-900 to-black">
-        <div className="max-w-4xl text-center">
+      <div className='px-6 py-20 flex justify-center  bg-gradient-to-b from-black via-gray-900 to-black'>
+        <div className='max-w-4xl text-center'>
 
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white leading-tight">
+          <h2 className='text-4xl md:text-5xl font-extrabold text-white leading-tight'>
             Discover Movies That Match Your Mood 🎥
           </h2>
 
-          <p className="mt-6 text-lg text-gray-300">
+          <p className='mt-6 text-lg text-gray-300'>
             Explore trending blockbusters, timeless classics, and genre-based
             movies curated just for you. Watch trailers, track history, and
             enjoy a cinematic experience like never before.
           </p>
 
           {/* BUTTONS */}
-          <div className="mt-10 flex flex-col sm:flex-row justify-center gap-6">
+          <div className='mt-10 flex flex-col sm:flex-row justify-center gap-6'>
 
             {/* trending Movies */}
             <button

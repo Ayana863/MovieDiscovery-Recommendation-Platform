@@ -14,7 +14,7 @@ function Trending() {
 
   return (
     <>
-      <div className="min-h-screen bg-black">
+      <div className='min-h-screen bg-black'>
 
         {isSearching ? (
           <SearchResult setMovieCard={setMovieCard} />
