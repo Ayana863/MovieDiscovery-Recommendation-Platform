@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react"
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom"
 import Search from "./Search";
-import { FaRegHeart } from "react-icons/fa";
+import { FaRegHeart, FaBars, FaTimes } from "react-icons/fa";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../FIREBASE/Firebase";
 import Profile from '../assets/ProfileImg.png'
@@ -16,8 +16,9 @@ function Navbar({ isLandingPage }) {
   const isAuthPage = location.pathname === "/login" || location.pathname === "/register"
 
   const [user, setUser] = useState(null)
+  const [menuOpen, setMenuOpen] = useState(false)
 
-  //  Firebase auth listener
+  // Firebase auth listener
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser)
@@ -25,88 +26,126 @@ function Navbar({ isLandingPage }) {
     return () => unsubscribe()
   }, [])
 
-  // logout
   const handleLogout = async () => {
-    await signOut(auth)
-    navigate("/login")
+    const confirmed = window.confirm("Are you sure you want to logout?")
+    if (confirmed) {
+      try {
+        await signOut(auth)
+        navigate("/login")
+        setMenuOpen(false)
+      } catch (error) {
+        console.error("Logout failed:", error)
+        alert("Failed to logout. Please try again.")
+      }
+    }
   }
 
+
   return (
-    <nav className='w-full flex items-center justify-between py-8 px-4 fixed top-0 left-0 z-10 bg-gradient-to-br from-[#274c77] via-[#000] to-[#001233]'>
+    <nav className='w-full fixed top-0 left-0 z-50 bg-gradient-to-br from-[#274c77] via-black to-[#001233] px-6 py-5'>
 
-      <h1 className='text-2xl font-bold text-white tracking-wide'>
-        <Link to="/">Cine<span className='text-amber-500'>Scope</span></Link>
-      </h1>
+      {/* TOP BAR */}
+      <div className='flex items-center justify-between'>
 
-      {(isLandingPage || isAuthPage) && !user && (
-        <Link to="/login"
-          className={({ isActive }) =>
-            isActive
-              ? "text-amber-500 font-semibold border-b-2 border-amber-500"
-              : "text-white hover:text-amber-400 transition"
-          }>
-          <button className='px-5 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-black font-semibold transition shadow-2xl'>
-            Sign In
-          </button>
+        {/* LOGO */}
+        <Link to="/" className='text-2xl font-bold text-white'>
+          Cine<span className='text-amber-500'>Scope</span>
         </Link>
-      )}
 
-      {!isLandingPage && !isAuthPage && user && (
-        <div className='flex items-center gap-8'>
+        {/* DESKTOP MENU */}
+        {!isLandingPage && !isAuthPage && user && (
+          <div className='hidden md:flex items-center gap-8'>
 
-          <ul className='flex gap-7 text-slate-200 items-center'>
-            {!isHome && !isHistory && !isFavorites && (
-              <li><Search /></li>
-            )}
+            {!isHome && !isHistory && !isFavorites && <Search />}
 
-            <li > <NavLink
-              to="/home"
-              className={({ isActive }) =>
-                isActive
-                  ? "text-amber-500 font-semibold border-b-2 border-amber-500"
-                  : "text-white hover:text-amber-400 transition"
-              }>
-              Home</NavLink>
-            </li>
+            <NavLink to="/home" className={({ isActive }) =>
+              isActive ? "text-amber-500 font-semibold border-b-2 border-amber-500" : "text-white"
+            }>
+              Home
+            </NavLink>
 
-            <li>
-              <NavLink to="/favorites"
-                className={({ isActive }) =>
-                  isActive
-                    ? "text-amber-500 font-semibold border-b-2 border-amber-500"
-                    : "text-white hover:text-amber-400 transition"
-                }>
-                <FaRegHeart className="text-red-400 text-lg" title="Add to Favorites" />
-              </NavLink>
-            </li>
+            <NavLink to="/favorites">
+              <FaRegHeart className='text-red-400 text-xl' />
+            </NavLink>
 
-            <li>
-              <NavLink to='/history'
-                className={({ isActive }) =>
-                  isActive
-                    ? "text-amber-500 font-semibold border-b-2 border-amber-500"
-                    : "text-white hover:text-amber-400 transition"
-                }>WatchHistory</NavLink>
-            </li>
-          </ul>
+            <NavLink to="/history" className='text-white'>
+              WatchHistory
+            </NavLink>
 
-          <div className='flex items-center gap-3'>
-            <img
-              src={Profile}
-              className='w-10 h-10 rounded-full border-2 border-amber-500'
-            />
-            <span className='text-white text-sm'>
-              {user.displayName || "User"}
-            </span>
+            <div className='flex items-center gap-3'>
+              <img src={Profile} className='w-9 h-9 rounded-full border-2 border-amber-500' />
+              <span className='text-white text-sm'>{user.displayName || "User"}</span>
+              <button
+                onClick={handleLogout}
+                className='px-4 py-2 bg-amber-500 text-black rounded-lg font-semibold'
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        )}
 
-            <button
-              onClick={handleLogout}
-              className='px-4 py-2 rounded-lg bg-amber-500 hover:bg-amber-600 text-black font-semibold'
-            >
-              LogOut
+        {/* HAMBURGER MENU*/}
+        {!isLandingPage && !isAuthPage && user && (
+          <button
+            className='md:hidden text-white text-2xl'
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
+            {menuOpen ? <FaTimes /> : <FaBars />}
+          </button>
+        )}
+
+        {/* sign In  */}
+        {(isLandingPage || isAuthPage) && !user && (
+          <Link to="/login">
+            <button className='px-5 py-2 rounded-lg bg-amber-500 text-black font-semibold'>
+              Sign In
             </button>
+          </Link>
+        )}
+      </div>
+
+      {/* MOBILE MENU */}
+      {menuOpen && user && (
+        <div className='md:hidden mt-6 bg-black/90 rounded-xl p-6 space-y-4'>
+
+          {!isHome && !isHistory && !isFavorites && <Search />}
+
+          <NavLink
+            to="/home"
+            onClick={() => setMenuOpen(false)}
+            className='block text-white'
+          >
+            Home
+          </NavLink>
+
+          <NavLink
+            to="/favorites"
+            onClick={() => setMenuOpen(false)}
+            className='block text-white'
+          >
+            Favorites
+          </NavLink>
+
+          <NavLink
+            to="/history"
+            onClick={() => setMenuOpen(false)}
+            className='block text-white'
+          >
+            Watch History
+          </NavLink>
+
+          <div className='flex items-center gap-3 pt-4 border-t border-gray-700'>
+            <img src={Profile} className='w-9 h-9 rounded-full border-2 border-amber-500' />
+            <span className='text-white'>{user.displayName || "User"}</span>
           </div>
 
+          <button
+            onClick={handleLogout}
+            className='w-full mt-3 px-4 py-2 bg-amber-500 text-black rounded-lg font-semibold'
+          >
+            Logout
+          </button>
         </div>
       )}
     </nav>

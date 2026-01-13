@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { DISCOVER_MOVIES_URL, IMAGE_URL } from '../API/TmdbData'
-import { CiHeart } from 'react-icons/ci'
+import { CiHeart } from 'react-icons/ci';
 import { useOutletContext } from 'react-router-dom'
 import { AddToFav, RemoveFromFavorites } from '../Slice/Favorites'
 import { useDispatch, useSelector } from 'react-redux'

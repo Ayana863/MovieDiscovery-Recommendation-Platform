@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-// load history from localstorage
+
 const savedHistory = JSON.parse(localStorage.getItem("watchHistory")) || []
 
 export const HistorySlice = createSlice({
@@ -9,20 +9,31 @@ export const HistorySlice = createSlice({
   },
   reducers: {
     AddToHistory: (state, action) => {
-      const existingData = state.value.find(item => item.id === action.payload.id)
-      if (!existingData) {
+      const index = state.value.findIndex(item => item.id === action.payload.id)
+
+      if (index !== -1) {
+        // Movie already exists, update watchedAt to now
+        state.value[index] = { ...state.value[index], watchedAt: new Date().toISOString() }
+      } else {
+        // Add new movie at the beginning
         state.value.unshift(action.payload)
       }
-      // save to localstorage
-      localStorage.setItem("watchHistory", JSON.stringify(state.value))
 
+      // Save to localStorage
+      localStorage.setItem("watchHistory", JSON.stringify(state.value))
     },
+
     RemoveFromHistory: (state, action) => {
       state.value = state.value.filter(item => item.id !== action.payload)
-      // update Item
+      localStorage.setItem("watchHistory", JSON.stringify(state.value))
+    },
+
+    ClearHistory: (state) => {
+      state.value = []
       localStorage.setItem("watchHistory", JSON.stringify(state.value))
     }
   }
 })
-export const { AddToHistory, RemoveFromHistory } = HistorySlice.actions
+
+export const { AddToHistory, RemoveFromHistory, ClearHistory } = HistorySlice.actions
 export default HistorySlice.reducer

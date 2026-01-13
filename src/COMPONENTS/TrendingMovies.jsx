@@ -1,10 +1,10 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
-import { IMAGE_URL, TRENDING_MOVIES_URL } from "../API/TmdbData";
+import React, { useEffect, useRef, useState } from "react"
+import { IMAGE_URL, TRENDING_MOVIES_URL } from "../API/TmdbData"
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { CiHeart } from "react-icons/ci";
-import { AddToFav } from "../Slice/Favorites";
-import { useDispatch, useSelector } from "react-redux";
+import { AddToFav } from "../Slice/Favorites"
+import { useDispatch, useSelector } from "react-redux"
 
 
 

@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { DISCOVER_MOVIES_URL, IMAGE_URL } from '../API/TmdbData'
-import { CiHeart } from 'react-icons/ci'
+import { CiHeart } from 'react-icons/ci';
 import { useOutletContext } from 'react-router-dom'
 import { AddToFav } from '../Slice/Favorites'
 import { useDispatch, useSelector } from 'react-redux'
@@ -30,7 +30,7 @@ function Thriller() {
         setThriller(response.data.results)
 
       } catch (err) {
-        console.log(err);
+        console.log(err)
 
       }
     }
@@ -65,12 +65,12 @@ function Thriller() {
   return (
     <>
 
-      <h2 className="mt-4 text-white font-bold text-3xl px-6">
+      <h2 className='mt-4 text-white font-bold text-3xl px-6'>
         Thriller
       </h2>
 
       {filteredThrillerMovies.length === 0 && searchValue && (
-        <p className="text-center text-gray-400 mt-20">
+        <p className='text-center text-gray-400 mt-20'>
           No movies found
         </p>
       )}

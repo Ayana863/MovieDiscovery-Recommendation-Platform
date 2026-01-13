@@ -16,6 +16,10 @@ import Horror from './GENRE/Horror'
 import Thriller from './GENRE/Thriller'
 import TopRatedMovie from './COMPONENTS/TopRatedMovie'
 import Auth from './PAGES/Auth'
+import UserRating from './PAGES/UserRating'
+import UserReview from './PAGES/UserReview'
+
+
 
 
 function App() {
@@ -23,11 +27,8 @@ function App() {
   const isLandingPage = location.pathname === '/'
 
   return (
-
     <>
-
       <Navbar isLandingPage={isLandingPage} />
-
 
       <Routes>
         <Route path='/' element={<LandingPage />} />
@@ -48,14 +49,11 @@ function App() {
         <Route path='/history' element={<WatchHistory />} />
         <Route path='/trending' element={<Trending />} />
         <Route path='/toprated' element={<TopRatedMovie />} />
-
         <Route path="/login" element={<Auth />} />
         <Route path="/register" element={<Auth />} />
+        <Route path="/rate" element={<UserRating />} />
+        <Route path="/reviews" element={<UserReview />} />
       </Routes>
-
-
-
-
 
     </>
   )

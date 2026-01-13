@@ -1,7 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { DISCOVER_MOVIES_URL, IMAGE_URL } from '../API/TmdbData'
-import { CiHeart } from 'react-icons/ci'
+import { CiHeart } from 'react-icons/ci';
 import { useOutletContext } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { AddToFav } from '../Slice/Favorites'
@@ -59,14 +59,12 @@ function Drama() {
 
   return (
     <>
-
-
-      <h2 className="mt-4 text-white font-bold text-3xl px-6">
+      <h2 className='mt-4 text-white font-bold text-3xl px-6'>
         Drama
       </h2>
 
       {filteredDrama.length === 0 && searchValue && (
-        <p className="text-center text-gray-400 mt-20">
+        <p className='text-center text-gray-400 mt-20'>
           No movies found
         </p>
       )}
@@ -92,8 +90,8 @@ function Drama() {
               >
                 <CiHeart
                   className={`text-3xl ${FavoritesItems.find(item => item.id === movie.id)
-                      ? 'text-red-500'
-                      : 'text-white'
+                    ? 'text-red-500'
+                    : 'text-white'
                     }`}
                 />
               </button>

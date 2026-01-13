@@ -1,9 +1,9 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
-import { IMAGE_URL, POPULAR_MOVIES_URL } from "../API/TmdbData";
+import React, { useEffect, useRef, useState } from "react"
+import { IMAGE_URL, POPULAR_MOVIES_URL } from "../API/TmdbData"
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { CiHeart } from "react-icons/ci";
-import { AddToFav } from "../Slice/Favorites";
+import { AddToFav } from "../Slice/Favorites"
 import { useDispatch, useSelector } from "react-redux";
 
 
@@ -31,11 +31,11 @@ function PopularMovies({ setMovieCard }) {
   }, [])
 
   const scrollLeft = () => {
-    scrollRef.current.scrollBy({ left: -400, behavior: "smooth" });
+    scrollRef.current.scrollBy({ left: -400, behavior: "smooth" })
   }
 
   const scrollRight = () => {
-    scrollRef.current.scrollBy({ left: 400, behavior: "smooth" });
+    scrollRef.current.scrollBy({ left: 400, behavior: "smooth" })
   }
 
 

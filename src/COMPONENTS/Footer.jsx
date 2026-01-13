@@ -14,21 +14,7 @@ function Footer() {
             Discover, track, and enjoy movies with personalized recommendations and curated genres.
           </p>
         </div>
-        {/* Links */}
-        <ul className='flex gap-6 mb-4 md:mb-0'>
-          <li>
-            <a href="/home" className='hover:text-amber-500 transition'>Home</a>
-          </li>
-          <li>
-            <a href="/favorites" className='hover:text-amber-500 transition'>Favorites</a>
-          </li>
-          <li>
-            <a href="/history" className='hover:text-amber-500 transition'>History</a>
-          </li>
-          <li>
-            <a href="/profile" className='hover:text-amber-500 transition'>Profile</a>
-          </li>
-        </ul>
+
 
         {/* Social Icons */}
         <div className='flex gap-4'>

@@ -1,9 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
-import axios from "axios";
-import { IMAGE_URL, UPCOMING_MOVIES_URL } from "../API/TmdbData";
-
-
-
+import React, { useEffect, useRef, useState } from "react"
+import axios from "axios"
+import { IMAGE_URL, UPCOMING_MOVIES_URL } from "../API/TmdbData"
 
 
 function UpcomingMovies() {
