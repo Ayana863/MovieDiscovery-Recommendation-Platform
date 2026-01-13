@@ -64,11 +64,15 @@ function Navbar({ isLandingPage }) {
               Home
             </NavLink>
 
-            <NavLink to="/favorites">
+            <NavLink to="/favorites"  className={({ isActive }) =>
+              isActive ? "text-amber-500 font-semibold border-b-2 border-amber-500" : "text-white"
+            }>
               <FaRegHeart className='text-red-400 text-xl' />
             </NavLink>
 
-            <NavLink to="/history" className='text-white'>
+            <NavLink to="/history"className={({ isActive }) =>
+              isActive ? "text-amber-500 font-semibold border-b-2 border-amber-500" : "text-white"
+            }>
               WatchHistory
             </NavLink>
 
